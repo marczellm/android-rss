@@ -32,6 +32,8 @@ final class Dates {
   private static final SimpleDateFormat RFC822 = new SimpleDateFormat(
       "EEE, dd MMM yyyy HH:mm:ss Z", java.util.Locale.ENGLISH);
 
+  private static final SimpleDateFormat alsoRan = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm Z", java.util.Locale.ENGLISH);
+
   /* Hide constructor */
   private Dates() {}
   
@@ -43,8 +45,14 @@ final class Dates {
   static java.util.Date parseRfc822(String date) {
     try {
       return RFC822.parse(date);
-    } catch (ParseException e) {
-      throw new RSSFault(e);
+    }
+    catch (ParseException e) {
+      try {
+          return alsoRan.parse(date);
+      }
+      catch (ParseException ee){
+          throw new RSSFault(e);
+      }
     }
   }
 
